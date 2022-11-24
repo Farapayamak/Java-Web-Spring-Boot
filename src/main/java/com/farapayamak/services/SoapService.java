@@ -21,7 +21,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-
 @Service
 public class SoapService {
 
@@ -31,7 +30,6 @@ public class SoapService {
     private String Password = "password";
 
     private String SEND_Endpoint = "http://api.payamak-panel.com/post/send.asmx/%s?username=%s&password=%s";
-    
 
     public SoapService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
@@ -43,69 +41,80 @@ public class SoapService {
 
     // SEND
     public String GetCredit() {
-        String operation = new Object(){}.getClass().getEnclosingMethod().getName();
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
         String url = SetCredentials(SEND_Endpoint, operation);
         return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "double");
     }
 
-
-    public String ObjectToString(Object obj) {
-        return "&" + Arrays.stream(obj.getClass().getFields())
-        .map(f-> {
-            try {
-                return f.getName() + "=" + f.get(obj).toString();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }).filter(Objects::nonNull).collect(Collectors.joining("&"));
+    public String GetDeliveries(String... recIds) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SEND_Endpoint, operation) + ArrayToString("recIds", recIds);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfInt");
     }
 
 
+    // Helper methods
+    public String ObjectToString(Object obj) {
+        return Arrays.stream(obj.getClass().getFields())
+                .filter(Objects::nonNull)
+                .map(f -> {
+                    try {
+                        return "&" + f.getName() + "=" + f.get(obj).toString();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }).collect(Collectors.joining("&"));
+    }
 
+
+    public String ArrayToString(String name, Object... items) {
+        String result = "";
+        for (Object i : items) {
+            result += "&" + name + "=" + String.valueOf(i);
+        }
+        return result;
+    }
 
 
     public String InspectResponse(String response, String operation, String field) {
-		
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-		try {
-  
-			// optional, but recommended
-			// process XML securely, avoid attacks like XML External Entities (XXE)
-			dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-  
-			// parse XML file
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			InputSource is = new InputSource(new StringReader(response));
-			Document doc = db.parse(is);
-  
-			// optional, but recommended
-			// http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-			doc.getDocumentElement().normalize();
-			
-			if(doc.getDocumentElement().getNodeName() == field)
-				return doc.getDocumentElement().getTextContent();
-  
-			NodeList list = doc.getElementsByTagName(operation + "Response");
-  
-			for (int temp = 0; temp < list.getLength(); temp++) {
-  
-				Node node = list.item(temp);
-  
-				if (node.getNodeType() == Node.ELEMENT_NODE) {
-  
-					Element element = (Element) node;
-					
-					if(node.getNodeName() == field)
-						return element.getElementsByTagName(field).item(0).getTextContent();  
-				}
-			}
-  
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			e.printStackTrace();
-		}
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
-		return response;
-	}
+        try {
+            // optional, but recommended
+            // process XML securely, avoid attacks like XML External Entities (XXE)
+            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            // parse XML file
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            InputSource is = new InputSource(new StringReader(response));
+            Document doc = db.parse(is);
+            // optional, but recommended
+            // http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+            doc.getDocumentElement().normalize();
+
+            if (doc.getDocumentElement().getNodeName() == field)
+                return doc.getDocumentElement().getTextContent();
+
+            NodeList list = doc.getElementsByTagName(operation + "Response");
+
+            for (int temp = 0; temp < list.getLength(); temp++) {
+
+                Node node = list.item(temp);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element element = (Element) node;
+
+                    if (node.getNodeName() == field)
+                        return element.getElementsByTagName(field).item(0).getTextContent();
+                }
+            }
+
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
 }

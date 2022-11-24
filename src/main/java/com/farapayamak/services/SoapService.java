@@ -21,7 +21,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.farapayamak.services.models.GetSmsPriceModel;
+import com.farapayamak.services.models.*;
 
 @Service
 public class SoapService {
@@ -66,7 +66,11 @@ public class SoapService {
         return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "double");
     }
 
-
+    public String SendByBaseNumber(SendByBaseNumberModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SEND_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "string");
+    }
 
     
 
@@ -77,6 +81,8 @@ public class SoapService {
                 .filter(Objects::nonNull)
                 .map(f -> {
                     try {
+                        if(isArray(f.get(obj)))
+                            return ArrayToString(f.getName(), (Object[])f.get(obj));
                         return f.getName() + "=" + f.get(obj).toString();
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
@@ -85,6 +91,10 @@ public class SoapService {
                 }).collect(Collectors.joining("&"));
     }
 
+    public static boolean isArray(Object obj)
+    {
+        return obj instanceof int[] || obj instanceof String[] || obj instanceof Long[];
+    }
 
     public String ArrayToString(String name, Object... items) {
         String result = "";

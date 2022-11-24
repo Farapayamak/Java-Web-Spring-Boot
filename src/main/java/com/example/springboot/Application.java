@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.farapayamak.services.SoapService;
-import com.farapayamak.services.models.GetSmsPriceModel;
+import com.farapayamak.services.models.*;
 
 @SpringBootApplication
 @ComponentScan({ "com.farapayamak.services" })
@@ -29,12 +29,18 @@ public class Application implements CommandLineRunner {
 		// System.out.println(soapService.GetCredit());
 		// System.out.println(soapService.GetDeliveries(new String[]{"123456", "654123"}));
 		
-		GetSmsPriceModel model = new GetSmsPriceModel();
-		model.mtnCount = 1;
-		model.irancellCount = 2;
-		model.from = "5000xxx";
-		model.text = "Sample text goes here!";
-		System.out.println(soapService.GetSmsPrice(model));
+		// GetSmsPriceModel model = new GetSmsPriceModel();
+		// model.mtnCount = 1;
+		// model.irancellCount = 2;
+		// model.from = "5000xxx";
+		// model.text = "Sample text goes here!";
+		// System.out.println(soapService.GetSmsPrice(model));
+
+		var model = new SendByBaseNumberModel();
+		model.bodyId = 8852;
+		model.text = new String[] {"AAA", "BBB"};
+		model.to = "09123456789";
+		System.out.println(soapService.SendByBaseNumber(model));
 	}
 
 }

@@ -21,6 +21,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.farapayamak.services.models.GetSmsPriceModel;
+
 @Service
 public class SoapService {
 
@@ -46,20 +48,36 @@ public class SoapService {
         return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "double");
     }
 
-    public String GetDeliveries(String... recIds) {
+    public String GetDeliveries(String[] recIds) {
         String operation = new Object() {}.getClass().getEnclosingMethod().getName();
         String url = SetCredentials(SEND_Endpoint, operation) + ArrayToString("recIds", recIds);
         return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfInt");
     }
 
+    public String GetDeliveries3(String[] recId) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SEND_Endpoint, operation) + ArrayToString("recId", recId);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfInt");
+    }
+
+    public String GetSmsPrice(GetSmsPriceModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SEND_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "double");
+    }
+
+
+
+    
+
 
     // Helper methods
     public String ObjectToString(Object obj) {
-        return Arrays.stream(obj.getClass().getFields())
+        return "&" + Arrays.stream(obj.getClass().getFields())
                 .filter(Objects::nonNull)
                 .map(f -> {
                     try {
-                        return "&" + f.getName() + "=" + f.get(obj).toString();
+                        return f.getName() + "=" + f.get(obj).toString();
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }

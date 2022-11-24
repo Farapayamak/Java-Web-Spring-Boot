@@ -78,10 +78,46 @@ public class SoapService {
         return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "string");
     }
 
-    public String SendByBaseNumber3(SendByBaseNumber3 model) {
+    public String SendByBaseNumber3(SendByBaseNumber3Model model) {
         String operation = new Object() {}.getClass().getEnclosingMethod().getName();
         String url = SetCredentials(SEND_Endpoint, operation) + ObjectToString(model);
         return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "string");
+    }
+
+    public String SendSimpleSMS(SendSimpleSMSModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SEND_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfString");
+    }
+
+    public String SendSimpleSMS2(SendSimpleSMS2Model model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SEND_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "string");
+    }
+
+    public String SendSms(SendSmsModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SEND_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "SendSmsResult");
+    }
+
+    public String SendSms2(SendSms2Model model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SEND_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "SendSms2Result");
+    }
+
+    public String SendMultipleSMS(SendMultipleSMSModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SEND_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "SendMultipleSMSResult");
+    }
+
+    public String SendMultipleSMS2(SendMultipleSMS2Model model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SEND_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "SendMultipleSMS2Result");
     }
 
     

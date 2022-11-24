@@ -72,11 +72,23 @@ public class SoapService {
         return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "string");
     }
 
+    public String SendByBaseNumber2(SendByBaseNumber2Model model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SEND_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "string");
+    }
+
+    public String SendByBaseNumber3(SendByBaseNumber3 model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SEND_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "string");
+    }
+
     
 
 
     // Helper methods
-    public String ObjectToString(Object obj) {
+    private String ObjectToString(Object obj) {
         return "&" + Arrays.stream(obj.getClass().getFields())
                 .filter(Objects::nonNull)
                 .map(f -> {
@@ -91,12 +103,14 @@ public class SoapService {
                 }).collect(Collectors.joining("&"));
     }
 
-    public static boolean isArray(Object obj)
+
+    private static boolean isArray(Object obj)
     {
         return obj instanceof int[] || obj instanceof String[] || obj instanceof Long[];
     }
 
-    public String ArrayToString(String name, Object... items) {
+
+    private String ArrayToString(String name, Object... items) {
         String result = "";
         for (Object i : items) {
             result += "&" + name + "=" + String.valueOf(i);
@@ -105,7 +119,7 @@ public class SoapService {
     }
 
 
-    public String InspectResponse(String response, String operation, String field) {
+    private String InspectResponse(String response, String operation, String field) {
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 

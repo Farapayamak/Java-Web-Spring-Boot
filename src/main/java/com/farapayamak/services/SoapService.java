@@ -31,7 +31,8 @@ public class SoapService {
     private String Username = "username";
     private String Password = "password";
 
-    private String SEND_Endpoint = "http://api.payamak-panel.com/post/send.asmx/%s?username=%s&password=%s";
+    private final String SEND_Endpoint = "http://api.payamak-panel.com/post/send.asmx/%s?username=%s&password=%s";
+    private final String RECEIVE_Endpoint = "http://api.payamak-panel.com/post/receive.asmx/%s?username=%s&password=%s";
 
     public SoapService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
@@ -119,6 +120,70 @@ public class SoapService {
         String url = SetCredentials(SEND_Endpoint, operation) + ObjectToString(model);
         return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "SendMultipleSMS2Result");
     }
+
+
+    // RECEIVE
+    public String ChangeMessageIsRead(String msgIds) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(RECEIVE_Endpoint, operation) + "&msgIds=" + msgIds;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String GetInboxCount(Boolean isRead) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(RECEIVE_Endpoint, operation) + "&isRead=" + isRead.toString();
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String GetLatestReceiveMsg(String sender, String receiver) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(RECEIVE_Endpoint, operation) + "&sender=" + sender + "&receiver=" + receiver;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "LatestMsgReport");
+    }
+
+    public String GetMessages(GetMessagesModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(RECEIVE_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfMessagesBL");
+    }
+
+    public String GetMessagesAfterID(GetMessagesAfterIDModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(RECEIVE_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfMessagesBL");
+    }
+
+    public String GetMessagesFilterByDate(GetMessagesFilterByDateModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(RECEIVE_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfMessagesBL");
+    }
+
+    public String GetMessagesReceptions(Integer msgId, Integer fromRows) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(RECEIVE_Endpoint, operation) + "&msgId=" + msgId.toString() + "&fromRows=" + fromRows.toString();
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfMsgReceptions");
+    }
+
+    public String GetMessagesWithChangeIsRead(GetMessagesWithChangeIsReadModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(RECEIVE_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfMessagesBL");
+    }
+
+    public String GetOutBoxCount() {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(RECEIVE_Endpoint, operation);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    // location values: Received or Sent or Removed or Deleted
+    public String RemoveMessages(String location, String msgIds) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(RECEIVE_Endpoint, operation) + "&location=" + location + "&msgIds=" + msgIds;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
 
     
 

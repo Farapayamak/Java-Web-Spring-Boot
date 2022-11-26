@@ -33,6 +33,7 @@ public class SoapService {
 
     private final String SEND_Endpoint = "http://api.payamak-panel.com/post/send.asmx/%s?username=%s&password=%s";
     private final String RECEIVE_Endpoint = "http://api.payamak-panel.com/post/receive.asmx/%s?username=%s&password=%s";
+    private final String USER_Endpoint = "http://api.payamak-panel.com/post/Users.asmx/%s?username=%s&password=%s";
 
     public SoapService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
@@ -184,6 +185,152 @@ public class SoapService {
         return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
     }
 
+
+    // USER
+    public String AddUser(AddUserModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String AddUserWithLocation(AddUserWithLocationModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String AddUserWithMobileNumber(AddUserWithMobileNumberModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "string");
+    }
+
+    public String AddUserWithMobileNumber2(AddUserWithMobileNumber2Model model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "string");
+    }
+
+    public String AddUserWithUserNameAndPass(AddUserWithUserNameAndPassModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "string");
+    }
+
+    public String AuthenticateUser() {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String ChangeUserCredit(ChangeUserCreditModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String DeductUserCredit(Double amount, String description) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + "&amount=" + amount.toString() + "&description=" + description;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String ForgotPassword(ForgotPasswordModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String GetCities(Integer provinceId) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + "&provinceId=" + provinceId.toString();
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfCity");
+    }
+
+    public String GetEnExpireDate() {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "dateTime");
+    }
+
+    public String GetExpireDate() {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "string");
+    }
+
+    public String GetProvinces() {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfProvince");
+    }
+
+    public String GetUserBasePrice(String targetUsername) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + "&targetUsername=" + targetUsername;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "double");
+    }
+
+    public String GetUserCredit(String targetUsername) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + "&targetUsername=" + targetUsername;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "double");
+    }
+
+    public String GetUserCredit2() {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "double");
+    }
+
+    public String GetUserDetails(String targetUsername) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + "&targetUsername=" + targetUsername;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "UserGridList");
+    }
+
+    public String GetUserIsExist(String targetUsername) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + "&targetUsername=" + targetUsername;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "double");
+    }
+
+    public String GetUserNumbers() {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfString");
+    }
+
+    
+    public String GetUserTransactions(GetUserTransactionsModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfCredistGridList");
+    }
+
+    public String GetUserWallet() {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "double");
+    }
+
+    public String GetUserWalletTransaction(GetUserWalletTransactionModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfWalletGridList");
+    }
+
+    public String GetUsers() {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfUserGridList");
+    }
+
+    public String RemoveUser(String targetUsername) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(USER_Endpoint, operation) + "&targetUsername=" + targetUsername;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
 
     
 

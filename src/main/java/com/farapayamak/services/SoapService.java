@@ -37,6 +37,7 @@ public class SoapService {
     private final String VOICE_Endpoint = "http://api.payamak-panel.com/post/Voice.asmx/%s?username=%s&password=%s";
     private final String CONTACT_Endpoint = "http://api.payamak-panel.com/post/contacts.asmx/%s?username=%s&password=%s";
     private final String SCHEDULE_Endpoint = "http://api.payamak-panel.com/post/Schedule.asmx/%s?username=%s&password=%s";
+    private final String BULKS_Endpoint = "http://api.payamak-panel.com/post/newbulks.asmx/%s?username=%s&password=%s";
 
     public SoapService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
@@ -480,6 +481,46 @@ public class SoapService {
         return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");  
     }
 
+    
+    // BULKS
+    public String AddNumberBulk(AddNumberBulkModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(BULKS_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String BulkReception(BulkReceptionModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(BULKS_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfBulkReceptionExport");
+    }
+
+    public String BulkReceptionCount(Integer bulkId) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(BULKS_Endpoint, operation) + "&bulkId=" + bulkId.toString();
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String GetBulkDeliveries(Long[] recIds) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(BULKS_Endpoint, operation) + ArrayToString("recIds", recIds);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfInt");
+    }
+
+    public String GetBulkDeliveries2(String recId) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(BULKS_Endpoint, operation) + "&recId=" + recId;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String GetBulkDetails(Integer bulkdId) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(BULKS_Endpoint, operation) + "&bulkdId=" + bulkdId.toString();
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfBulkDetails");
+    }
+
+
+    
     
 
 

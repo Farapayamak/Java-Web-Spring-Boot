@@ -35,6 +35,7 @@ public class SoapService {
     private final String RECEIVE_Endpoint = "http://api.payamak-panel.com/post/receive.asmx/%s?username=%s&password=%s";
     private final String USER_Endpoint = "http://api.payamak-panel.com/post/Users.asmx/%s?username=%s&password=%s";
     private final String VOICE_Endpoint = "http://api.payamak-panel.com/post/Voice.asmx/%s?username=%s&password=%s";
+    private final String CONTACT_Endpoint = "http://api.payamak-panel.com/post/contacts.asmx/%s?username=%s&password=%s";
 
     public SoapService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
@@ -352,6 +353,98 @@ public class SoapService {
         String url = SetCredentials(VOICE_Endpoint, operation) + "&title=" + title + "&base64StringFile=" + base64StringFile;
         return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
     }
+
+
+
+    // CONTACT
+    public String AddContact(AddContactModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String AddContactEvents(AddContactEventsModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String AddGroup(AddGroupModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String ChangeContact(ChangeContactModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String ChangeGroup(ChangeGroupModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String CheckMobileExistInContact(String mobileNumber) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + "&mobileNumber=" + mobileNumber;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String GetContactEvents(Integer contactId) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + "&contactId=" + contactId.toString();
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfContactEventBL");
+    }
+
+    public String GetContacts(GetContactsModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfContactsGridList");
+    }
+
+    public String GetContactsByID(Integer contactId, Integer status) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + "&contactId=" + contactId.toString() + "&status=" + status.toString();
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfContactsGridList");
+    }
+
+    public String GetGroups() {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfGroupsList");
+    }
+
+    public String MergeGroups(MergeGroupsModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String RemoveContact(String mobilenumber) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + "&mobilenumber=" + mobilenumber;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String RemoveContactByContactID(Integer contactId) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + "&contactId=" + contactId.toString();
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String RemoveGroup(Integer groupId) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(CONTACT_Endpoint, operation) + "&groupId=" + groupId.toString();
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+
+    // 
+
+
     
 
 

@@ -36,6 +36,7 @@ public class SoapService {
     private final String USER_Endpoint = "http://api.payamak-panel.com/post/Users.asmx/%s?username=%s&password=%s";
     private final String VOICE_Endpoint = "http://api.payamak-panel.com/post/Voice.asmx/%s?username=%s&password=%s";
     private final String CONTACT_Endpoint = "http://api.payamak-panel.com/post/contacts.asmx/%s?username=%s&password=%s";
+    private final String SCHEDULE_Endpoint = "http://api.payamak-panel.com/post/Schedule.asmx/%s?username=%s&password=%s";
 
     public SoapService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
@@ -442,8 +443,42 @@ public class SoapService {
     }
 
 
-    // 
+    // SCHEDULE
+    public String AddNewMultipleSchedule(AddNewMultipleScheduleModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SCHEDULE_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ArrayOfInt");
+    }
 
+    public String AddNewUsance(AddNewUsanceModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SCHEDULE_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String AddSchedule(AddScheduleModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SCHEDULE_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String GetScheduleDetails(Integer scheduleId) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SCHEDULE_Endpoint, operation) + "&scheduleId=" + scheduleId.toString();
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "ScheduleDetails");
+    }
+
+    public String GetScheduleStatus(Integer scheduleId) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SCHEDULE_Endpoint, operation) + "&scheduleId=" + scheduleId.toString();
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");    
+    }
+
+    public String RemoveSchedule(Integer scheduleId) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SCHEDULE_Endpoint, operation) + "&scheduleId=" + scheduleId.toString();
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");  
+    }
 
     
 

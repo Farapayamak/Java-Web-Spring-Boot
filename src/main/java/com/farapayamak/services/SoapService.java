@@ -34,6 +34,7 @@ public class SoapService {
     private final String SEND_Endpoint = "http://api.payamak-panel.com/post/send.asmx/%s?username=%s&password=%s";
     private final String RECEIVE_Endpoint = "http://api.payamak-panel.com/post/receive.asmx/%s?username=%s&password=%s";
     private final String USER_Endpoint = "http://api.payamak-panel.com/post/Users.asmx/%s?username=%s&password=%s";
+    private final String VOICE_Endpoint = "http://api.payamak-panel.com/post/Voice.asmx/%s?username=%s&password=%s";
 
     public SoapService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
@@ -332,6 +333,25 @@ public class SoapService {
         return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
     }
 
+
+    // VOICE
+    public String SendBulkSpeechText(SendBulkSpeechTextModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(VOICE_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String SendBulkVoiceSMS(SendBulkVoiceSMSModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(VOICE_Endpoint, operation) + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
+
+    public String UploadVoiceFile(String title, String base64StringFile) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(VOICE_Endpoint, operation) + "&title=" + title + "&base64StringFile=" + base64StringFile;
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "int");
+    }
     
 
 

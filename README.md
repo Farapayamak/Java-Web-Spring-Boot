@@ -1,13 +1,6 @@
 # Farapayamak Java for Web (Spring Boot)
 Java webservice wrapper for Farapayamak 
 
-
-Use this command to run the application:
-
-`./mvnw spring-boot:run`
-
-Then apllication listens on prot *8080*.
-
 ## Introduction
 Here we've provided a complete 3rd-party library (SDK) for Java Spring Boot developers that covers both **SOAP** and **REST** webservices. Before using, make sure you have provided a [valid account in Farapayamak corporation](https://farapayamak.ir/start/).
 
@@ -19,6 +12,12 @@ You can use this Spring Boot project template with the following configuration a
 - Java 19
 - Maven
 - Jar as Packaging
+
+Use this command to run the application:
+
+`./mvnw spring-boot:run`
+
+Then it listens on port *8080*.
 
 ## Usage
 This is the simple usage for both REST and SOAP APIs:

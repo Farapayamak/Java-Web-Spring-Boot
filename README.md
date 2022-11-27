@@ -25,7 +25,12 @@ This is the simple usage for both REST and SOAP APIs:
 
 restService.SendSMS('09123456789', '5000xxx', 'test sms', false);
 
-soapService.SendSimpleSMS2('09123456789', '5000xxx', 'test sms', false);
+var model = new SendSimpleSMS2Model();
+model.from = "5000xxx";
+model.text = "Hi there!";
+model.to = "09123456789";
+model.isflash = false;
+soapService.SendSimpleSMS2(model);
 
 ```
 Further demonstrations can be found inside the _Application.java_ file.
@@ -55,16 +60,16 @@ We support a wide range of methods in SOAP web service. They're scope separated.
 soapService.GetCredit();
 soapService.GetDeliveries(recIds);
 soapService.GetDeliveries3(recId);
-soapService.GetSmsPrice(irancellCount, mtnCount, from, text);
-soapService.SendByBaseNumber(text, to, bodyId);
-soapService.SendByBaseNumber2(text, to, bodyId);
-soapService.SendByBaseNumber3(text, to);
-soapService.SendSimpleSMS(to, from, text, isflash);
-soapService.SendSimpleSMS2(to, from, text, isflash);
-soapService.SendSms(to, from, text, isflash, udh, recId);
-soapService.SendSms2(to, from, text, isflash, udh, recId, status, filterId);
-soapService.SendMultipleSMS(to, from, text, isflash, udh, recId);
-soapService.SendMultipleSMS2(to, from, text, isflash, udh, recId);
+soapService.GetSmsPrice(model);
+soapService.SendByBaseNumber(model);
+soapService.SendByBaseNumber2(model);
+soapService.SendByBaseNumber3(model);
+soapService.SendSimpleSMS(model);
+soapService.SendSimpleSMS2(model);
+soapService.SendSms(model);
+soapService.SendSms2(model);
+soapService.SendMultipleSMS(model);
+soapService.SendMultipleSMS2(model);
 ```
 
 ### Receive Web Service
@@ -73,11 +78,11 @@ soapService.SendMultipleSMS2(to, from, text, isflash, udh, recId);
 soapService.ChangeMessageIsRead(msgIds);
 soapService.GetInboxCount();
 soapService.GetLatestReceiveMsg(sender, receiver);
-soapService.GetMessages(location, from, index, count);
-soapService.GetMessagesAfterID(location, from, count, msgId);
-soapService.GetMessagesFilterByDate(location, from, index, count, dateFrom, dateTo, isRead);
+soapService.GetMessages(model);
+soapService.GetMessagesAfterID(model);
+soapService.GetMessagesFilterByDate(model);
 soapService.GetMessagesReceptions(msgId, fromRows);
-soapService.GetMessagesWithChangeIsRead(location, from, index, count, isRead, changeIsRead);
+soapService.GetMessagesWithChangeIsRead(model);
 soapService.GetOutBoxCount();
 soapService.RemoveMessages(location, msgIds);
 ```
@@ -85,18 +90,15 @@ soapService.RemoveMessages(location, msgIds);
 ### User Web Service
 
 ```java
-soapService.AddUser(productId, descriptions, mobileNumber, emailAddress, nationalCode, 
-        name, family, corporation, phone, fax, address, postalCode, certificateNumber);
-soapService.AddUserWithLocation(productId, descriptions, mobileNumber, emailAddress, nationalCode, 
-    name, family, corporation, phone, fax, address, postalCode, certificateNumber, country, province, city);
-soapService.AddUserWithMobileNumber(productId, mobileNumber, firstName, lastName, email);
-soapService.AddUserWithMobileNumber2(productId, mobileNumber, firstName, lastName, userName, email);
-soapService.AddUserWithUserNameAndPass(productId, descriptions, mobileNumber, emailAddress, nationalCode, 
-    name, family, corporation, phone, fax, address, postalCode, certificateNumber, targetUserName, targetUserPassword);
+soapService.AddUser(model);
+soapService.AddUserWithLocation(model);
+soapService.AddUserWithMobileNumber(model);
+soapService.AddUserWithMobileNumber2(model);
+soapService.AddUserWithUserNameAndPass(model);
 soapService.AuthenticateUser();
-soapService.ChangeUserCredit(amount, description, targetUsername, GetTax);
+soapService.ChangeUserCredit(model);
 soapService.DeductUserCredit(amount, description);
-soapService.ForgotPassword(mobileNumber, emailAddress, targetUsername);
+soapService.ForgotPassword(model);
 soapService.GetCities(provinceId);
 soapService.GetEnExpireDate();
 soapService.GetExpireDate();
@@ -107,9 +109,9 @@ soapService.GetUserCredit2();
 soapService.GetUserDetails(targetUsername);
 soapService.GetUserIsExist(targetUsername);
 soapService.GetUserNumbers();
-soapService.GetUserTransactions(targetUsername, creditType, dateFrom, dateTo, keyword);
+soapService.GetUserTransactions(model);
 soapService.GetUserWallet();
-soapService.GetUserWalletTransaction(dateFrom, dateTo, count, startIndex, payType, payLoc);
+soapService.GetUserWalletTransaction(model);
 soapService.GetUsers();
 soapService.RemoveUser(targetUsername);
 ```
@@ -117,29 +119,25 @@ soapService.RemoveUser(targetUsername);
 ### Voice Web Service
 
 ```java
-soapService.SendBulkSpeechText(title, body, receivers, DateToSend, repeatCount);
-soapService.SendBulkVoiceSMS(title, voiceFileId, receivers, DateToSend, repeatCount);
+soapService.SendBulkSpeechText(model);
+soapService.SendBulkVoiceSMS(model);
 soapService.UploadVoiceFile(title, base64StringFile);
 ```
 
 ### Contacts Web Service
 
 ```java
-soapService.AddContact(groupIds, firstname, lastname, nickname, corporation, mobilenumber,
-        phone, fax, birthdate, email, gender, province, city, address, postalCode, additionaldate,
-        additionaltext, descriptions);
-soapService.AddContactEvents(contactId, eventName, eventType, eventDate);
-soapService.AddGroup(groupName, Descriptions, showToChilds);
-soapService.ChangeContact(contactId, firstname, lastname, nickname, corporation, mobilenumber,
-        phone, fax, email, gender, province, city, address, postalCode, contactStatus,
-        additionaltext, descriptions);
-soapService.ChangeGroup(groupId, groupName, Descriptions, showToChilds, groupStatus);
+soapService.AddContact(model);
+soapService.AddContactEvents(model);
+soapService.AddGroup(model);
+soapService.ChangeContact(model);
+soapService.ChangeGroup(model);
 soapService.CheckMobileExistInContact(mobileNumber);
 soapService.GetContactEvents(contactId);
-soapService.GetContacts(groupId, keyword, from, count);
+soapService.GetContacts(model);
 soapService.GetContactsByID(contactId, status);
 soapService.GetGroups();
-soapService.MergeGroups(originGroupId, destinationGroupId, deleteOriginGroup);
+soapService.MergeGroups(model);
 soapService.RemoveContact(mobilenumber);
 soapService.RemoveContactByContactID(contactId);
 soapService.RemoveGroup(groupId);
@@ -148,10 +146,9 @@ soapService.RemoveGroup(groupId);
 ### Schedule Web Service
 
 ```java
-soapService.AddNewMultipleSchedule(to, from, text, isflash, scheduleDateTime, period);
-soapService.AddNewUsance(to, from, text, isflash, scheduleStartDateTime, countrepeat,
-        scheduleEndDateTime, periodType);
-soapService.AddSchedule(to, from, text, isflash, scheduleDateTime, period);
+soapService.AddNewMultipleSchedule(model);
+soapService.AddNewUsance(model);
+soapService.AddSchedule(model);
 soapService.GetScheduleDetails(scheduleId);
 soapService.GetScheduleStatus(scheduleId);
 soapService.RemoveSchedule(scheduleId);
@@ -160,8 +157,8 @@ soapService.RemoveSchedule(scheduleId);
 ### Bulk Web Service
 
 ```java
-soapService.AddNumberBulk(from, title, messages, receivers, DateToSend);
-soapService.BulkReception(bulkId, maximumRows, startRowIndex);
+soapService.AddNumberBulk(model);
+soapService.BulkReception(model);
 soapService.BulkReceptionCount(bulkId);
 soapService.GetBulkDeliveries(recIds);
 soapService.GetBulkDeliveries2(recId);

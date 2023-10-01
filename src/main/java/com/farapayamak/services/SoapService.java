@@ -38,6 +38,7 @@ public class SoapService {
     private final String CONTACT_Endpoint = "http://api.payamak-panel.com/post/contacts.asmx/%s?username=%s&password=%s";
     private final String SCHEDULE_Endpoint = "http://api.payamak-panel.com/post/Schedule.asmx/%s?username=%s&password=%s";
     private final String BULKS_Endpoint = "http://api.payamak-panel.com/post/newbulks.asmx/%s?username=%s&password=%s";
+    private final String SMART_Endpoint = "https://api.payamak-panel.com/post/Smartsms.asmx/%s?username=%s&password=%s";
 
     public SoapService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
@@ -520,6 +521,24 @@ public class SoapService {
     }
 
 
+    //SMART
+    public String SendSmartSMS(SendSmartSMSModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SMART_Endpoint, operation) + + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "SendSmartSMSResponse");
+    }
+
+    public String SendMultipleSmartSMS(SendMultipleSmartSMSModel model) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SMART_Endpoint, operation) + + ObjectToString(model);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "SendMultipleSmartSMSResult");
+    }
+
+    public String GetSmartSMSDeliveries(Long[] ids) {
+        String operation = new Object() {}.getClass().getEnclosingMethod().getName();
+        String url = SetCredentials(SMART_Endpoint, operation) + + ArrayToString("Id", ids);
+        return InspectResponse(this.restTemplate.getForObject(url, String.class), operation, "GetSmartSMSDeliveriesResult");
+    }
     
     
 

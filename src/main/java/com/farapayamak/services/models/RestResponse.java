@@ -5,3 +5,15 @@ public class RestResponse {
     public Integer RetStatus;
     public String StrRetStatus;
 }
+
+
+public class RestSmartResponse {
+    public String ReqStatus;
+    public String Message;
+    public RestSmartResult[] Result;
+}
+
+public class RestSmartResult {
+    public String Mobile;
+    public Long ID;
+}

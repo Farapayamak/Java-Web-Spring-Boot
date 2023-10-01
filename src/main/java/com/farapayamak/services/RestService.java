@@ -13,19 +13,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.farapayamak.services.models.RestResponse;
+import com.google.code.gson;
 
 @Service
 public class RestService {
     
     private final RestTemplate restTemplate;
+    private final Gson gson;
 
     private String Username = "username";
     private String Password = "password";
 
-    private final String Endpoint = "https://rest.payamak-panel.com/api/SendSMS/%s";
+    private final String Endpoint = "https://rest.payamak-panel.com/api/%s";
     
     public RestService(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
+        gson = new Gson();
     }
 
     private HttpHeaders GetHttpHeaders() {
@@ -41,7 +44,7 @@ public class RestService {
     public RestResponse SendSMS(String to, String from, String text, Boolean isFlash) {
         
         String operation = new Object() {}.getClass().getEnclosingMethod().getName();
-        String url = String.format(Endpoint, operation);
+        String url = String.format(Endpoint, "SendSMS/" + operation);
         
         Map<String, Object> map = new HashMap<>();
         map.put("username", this.Username);
@@ -61,7 +64,7 @@ public class RestService {
     public RestResponse GetDeliveries2(Long recID) {
 
         String operation = new Object() {}.getClass().getEnclosingMethod().getName();
-        String url = String.format(Endpoint, operation);
+        String url = String.format(Endpoint, "SendSMS/" + operation);
         
         Map<String, Object> map = new HashMap<>();
         map.put("username", this.Username);
@@ -78,7 +81,7 @@ public class RestService {
     public RestResponse GetMessages(Integer location, String from, Integer index, Integer count) {
 
         String operation = new Object() {}.getClass().getEnclosingMethod().getName();
-        String url = String.format(Endpoint, operation);
+        String url = String.format(Endpoint, "SendSMS/" + operation);
         
         Map<String, Object> map = new HashMap<>();
         map.put("username", this.Username);
@@ -98,7 +101,7 @@ public class RestService {
     public RestResponse GetCredit() {
 
         String operation = new Object() {}.getClass().getEnclosingMethod().getName();
-        String url = String.format(Endpoint, operation);
+        String url = String.format(Endpoint, "SendSMS/" + operation);
         
         Map<String, Object> map = new HashMap<>();
         map.put("username", this.Username);
@@ -113,7 +116,7 @@ public class RestService {
 
     public RestResponse GetBasePrice() {
         String operation = new Object() {}.getClass().getEnclosingMethod().getName();
-        String url = String.format(Endpoint, operation);
+        String url = String.format(Endpoint, "SendSMS/" + operation);
         
         Map<String, Object> map = new HashMap<>();
         map.put("username", this.Username);
@@ -128,7 +131,7 @@ public class RestService {
 
     public RestResponse GetUserNumbers() {
         String operation = new Object() {}.getClass().getEnclosingMethod().getName();
-        String url = String.format(Endpoint, operation);
+        String url = String.format(Endpoint, "SendSMS/" + operation);
         
         Map<String, Object> map = new HashMap<>();
         map.put("username", this.Username);
@@ -143,7 +146,7 @@ public class RestService {
 
     public RestResponse BaseServiceNumber(String text, String to, Integer bodyId) {
         String operation = new Object() {}.getClass().getEnclosingMethod().getName();
-        String url = String.format(Endpoint, operation);
+        String url = String.format(Endpoint, "SendSMS/" + operation);
         
         Map<String, Object> map = new HashMap<>();
         map.put("username", this.Username);
@@ -159,4 +162,74 @@ public class RestService {
         return response.getBody();
     }
 
+
+    // SMART
+    public RestResponse SendSmartSMS(String to, String text, String from, String fromSupportOne, String fromSupportTwo) {
+        String url = String.format(Endpoint, "SmartSMS/Send");
+        
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", this.Username);
+        map.put("password", this.Password);
+        map.put("text", text);
+        map.put("to", to);
+        map.put("from", from);
+        map.put("fromSupportOne", fromSupportOne);
+        map.put("fromSupportTwo", fromSupportTwo);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, GetHttpHeaders());
+        
+        ResponseEntity<RestResponse> response = this.restTemplate.postForEntity(url, entity, RestResponse.class);
+        
+        return response.getBody();
+    }
+
+
+    public RestSmartResponse SendMultipleSmartSMS(String[] to, String[] text, String from, String fromSupportOne, String fromSupportTwo) {
+        String url = String.format(Endpoint, "SmartSMS/SendMultiple");
+        
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", this.Username);
+        map.put("password", this.Password);
+        map.put("text", text);
+        map.put("to", gson.toJson(to));
+        map.put("from", gson.toJson(from));
+        map.put("fromSupportOne", fromSupportOne);
+        map.put("fromSupportTwo", fromSupportTwo);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, GetHttpHeaders());
+        
+        ResponseEntity<RestResponse> response = this.restTemplate.postForEntity(url, entity, RestSmartResponse.class);
+        
+        return response.getBody();
+    }
+
+    public RestResponse GetSmartDeliveries2(Long id) {
+        String url = String.format(Endpoint, "SmartSMS/GetDeliveries2");
+        
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", this.Username);
+        map.put("password", this.Password);
+        map.put("Id", id);
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, GetHttpHeaders());
+        
+        ResponseEntity<RestResponse> response = this.restTemplate.postForEntity(url, entity, RestResponse.class);
+        
+        return response.getBody();
+    }
+
+    public RestResponse GetSmartDeliveries(Long[] ids) {
+        String url = String.format(Endpoint, "SmartSMS/GetDeliveries");
+        
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", this.Username);
+        map.put("password", this.Password);
+        map.put("Ids", gson.toJson(ids));
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(map, GetHttpHeaders());
+        
+        ResponseEntity<RestResponse> response = this.restTemplate.postForEntity(url, entity, RestResponse.class);
+        
+        return response.getBody();
+    }
 }
